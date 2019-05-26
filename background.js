@@ -17,7 +17,9 @@ class Queue {
 } 
 
 
-var links = ["https://google.com", "https://espn.com", "https://nytimes.com"];
+var links = ["https://mail.google.com/mail/u/0/#inbox",
+            "https://www.instagram.com/", "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/",
+            "https://www.google.com/search?q=michigan+football+recruiting", "https://www.google.com/search?q=michigan+basketball"];
 var extra = new Queue();
 
 chrome.browserAction.onClicked.addListener(function(tab) {
