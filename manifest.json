@@ -3,6 +3,7 @@
     "version": "0.1",
     "manifest_version": 2,
     "description": "Loads your favorite tabs all in a flash!",
+    "background_page": "options.html",
     "permissions": ["storage"],
     "browser_action": {
         "default_icon": "icons8-lightning-bolt-64.png"
