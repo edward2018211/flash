@@ -1,4 +1,4 @@
-//The Queue Class
+// MARK: - Data Structure Implementations
 class Queue { 
     constructor() { 
         this.items = []; 
@@ -17,11 +17,40 @@ class Queue {
     } 
 } 
 
+class Pocket {
+    constructor() {
+        this.items = new Queue();
+        this.numURL = 0;
+        this.pocketName = "";
+    }
 
-var links = ["https://mail.google.com/mail/u/0/#inbox",
-            "https://www.instagram.com/", "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/",
-            "https://www.google.com/search?q=michigan+football+recruiting", "https://www.google.com/search?q=michigan+basketball"];
-var extra = new Queue();
+    constructor(name) {
+        this.items = new Queue();
+        this.numURL = 0;
+        this.pocketName = name;
+    }
+
+    addURL(URL) {
+        this.items.enqueue(URL);
+        ++this.numURL; 
+    }
+
+    removeURL(URL) {
+        this.items.dequeue(URL);
+        --this.numURL;
+    }
+
+    flashPocket() {
+
+    }
+
+    dullPocket() {
+
+    }
+}
+
+// MARK: - Global Variables
+
 
 chrome.browserAction.onClicked.addListener(function(tab) {
     for (var i = 0; i < links.length; ++i) {
