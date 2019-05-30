@@ -47,19 +47,28 @@ class Pocket {
 
     addSetOfURL(URL) {
         for (var i = 0; i < URL.length; ++i) {
-            addURL(URL[i]);
+            this.addURL(URL[i]);
         }
         this.numURL += URL.length;
     }
 
     removeURL(URL) {
         for (var i = 0; i < URL.length; ++i) {
-            if (URL === this.items[i]) {
+            if (URL == this.items[i]) {
                 this.items[i] = "";
                 this.emptySpace.enqueue(i);
             }
         }
         --this.numURL;
+    }
+
+    existURL(URL) {
+        for (var i = 0; i < URL.length; ++i) {
+            if (URL == this.items[i]) {
+                return true
+            }
+        }
+        return false
     }
 
     flashPocket() {
@@ -68,10 +77,15 @@ class Pocket {
         }
     }
 
+    // Function Error
     dullPocket() {
-        for (var i = 0; i < this.items.length; ++i) {
-            chrome.tabs.remove({"url": this.items[i]});
-        }
+        chrome.tabs.query({},function(tabs){     
+            tabs.forEach(function(tab){
+              if (this.existURL(tab.url) == true) {
+                  chrome.tabs.remove(tab.id, optionalCallback);
+              }
+            });
+        });
     }
 }
 
@@ -107,4 +121,5 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     var pocket = new Pocket();
     pocket.setName = "Social Pocket";
     pocket.addSetOfURL(links);
+    pocket.flashPocket();
 });
