@@ -1,6 +1,6 @@
 // MARK: - Data Structure Implementations
 
-// Class utilized to effectivelty reuse memory in both Pocket and Garage arrays
+// Class utilized to effectively reuse memory in both Pocket and Garage objects
 class Queue { 
     constructor() { 
         this.items = [];
@@ -23,6 +23,7 @@ class Queue {
 class Pocket {
     constructor() {
         this.items = [];
+        this.itemsID =[];
         this.emptySpace = new Queue();
         this.numURL = 0;
         this.pocketName = "";
@@ -62,9 +63,9 @@ class Pocket {
         --this.numURL;
     }
 
-    existURL(URL) {
-        for (var i = 0; i < URL.length; ++i) {
-            if (URL == this.items[i]) {
+    existID(ID) {
+        for (var i = 0; i < this.id.length; ++i) {
+            if (ID == this.id[i]) {
                 return true
             }
         }
@@ -73,23 +74,27 @@ class Pocket {
 
     flashPocket() {
         for (var i = 0; i < this.items.length; ++i) {
-            chrome.tabs.create({"url": this.items[i]});
+            // Make sure we are not creating a tab for empty spot
+            if (this.items[i] != "") {
+                chrome.tabs.create({"url": this.items[i]});
+                this.itemsID.push();
+            }
         }
     }
 
-    // Function Error
     dullPocket() {
         chrome.tabs.query({},function(tabs){     
             tabs.forEach(function(tab){
-              if (this.existURL(tab.url) == true) {
-                  chrome.tabs.remove(tab.id, optionalCallback);
+              if (this.existID(tab.id)) {
+                  chrome.tabs.remove(tab.id);
               }
             });
         });
+        this.itemsID = [];
     }
 }
 
-// Class that holds all of a user pockets
+// Class that holds all of a user's pockets
 class Garage {
     constructor() {
         this.items = [];
@@ -114,6 +119,7 @@ class Garage {
     }
 }
 
+// Function runs when Chrome Extension clicked on
 chrome.browserAction.onClicked.addListener(function(tab) {
     var links = ["https://mail.google.com/mail/u/0/#inbox", "https://www.instagram.com", 
     "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting", 
@@ -122,4 +128,5 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     pocket.setName = "Social Pocket";
     pocket.addSetOfURL(links);
     pocket.flashPocket();
+    setTimeout(pocket.dullPocket(), 500)
 });
