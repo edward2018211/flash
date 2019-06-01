@@ -123,8 +123,12 @@ class Garage {
     }
 }
 
-// Function runs when Chrome Extension clicked on
+// MARK: - Google Chrome Functions
+
+// Runs when Chrome Extension clicked on
 chrome.browserAction.onClicked.addListener(function(tab) {
+
+
     var links = ["https://mail.google.com/mail/u/0/#inbox", "https://www.instagram.com", 
     "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting", 
     "https://www.google.com/search?q=michigan+basketball"];
