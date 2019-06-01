@@ -22,8 +22,8 @@ class Queue {
 // Class defining a pocket – a set of URLS that can be flashed or dulled
 class Pocket {
     constructor() {
-        this.items = [];
-        this.itemsID =[];
+        this.items = new Array();
+        this.itemsID = new Array();
         this.emptySpace = new Queue();
         this.numURL = 0;
         this.pocketName = "";
@@ -64,8 +64,8 @@ class Pocket {
     }
 
     existID(ID) {
-        for (var i = 0; i < this.id.length; ++i) {
-            if (ID == this.id[i]) {
+        for (var i = 0; i < this.itemsID.length; ++i) {
+            if (ID == this.itemsID[i]) {
                 return true
             }
         }
@@ -77,15 +77,19 @@ class Pocket {
             // Make sure we are not creating a tab for empty spot
             if (this.items[i] != "") {
                 chrome.tabs.create({"url": this.items[i]});
-                this.itemsID.push();
+                var me = this;
+                chrome.tabs.onCreated.addListener(function(tab) {
+                    me.itemsID.push(tab.id);
+                });
             }
         }
     }
 
     dullPocket() {
+        var me = this;
         chrome.tabs.query({},function(tabs){     
             tabs.forEach(function(tab){
-              if (this.existID(tab.id)) {
+              if (me.existID(tab.id)) {
                   chrome.tabs.remove(tab.id);
               }
             });
@@ -128,5 +132,5 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     pocket.setName = "Social Pocket";
     pocket.addSetOfURL(links);
     pocket.flashPocket();
-    setTimeout(pocket.dullPocket(), 500)
+    pocket.dullPocket();
 });
