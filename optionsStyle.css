@@ -3,6 +3,8 @@ header {
 }
 
 body {
-    background-color: plum;
+    background-image: url(../wallpapers/blockm.jpg);
+    background-size: cover;
+    background-position: 0px -180px;
     text-align: center;
 }
