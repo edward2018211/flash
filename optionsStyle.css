@@ -1,14 +1,25 @@
+/* Copyright Edward Huang 2019 */
+
+/* Style */
 header {
     text-align: center;
+    animation-name: fadeEffect;
+    animation-duration: 2s;
 }
 
 body {
-    background-image: url(../wallpapers/blockm.jpg);
+    background-image: url(../wallpapers/blur-breathtaking-clouds.jpg);
     animation-name: fadeEffect;
     animation-duration: 2s;
     background-size: cover;
     background-position: 0px -180px;
     text-align: center;
+}
+
+h5 {
+    animation-name: fadeEffect;
+    animation-duration: 2s;
+
 }
 
 /* Animations */

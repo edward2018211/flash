@@ -1,19 +1,24 @@
+// Copyright Edward Huang 2019
+
 // MARK: - Data Structure Implementations
 
-// Class utilized to effectively reuse memory in both Pocket and Garage objects
+// Class utilized to reuse memory in Pocket and Garage objects
 class Queue { 
     constructor() { 
         this.items = [];
     } 
-                  
+    
+    // Add empty spot to queue
     enqueue(element) {     
         this.items.push(element); 
     } 
 
+    // Remove empty spot from queue
     dequeue() {
         return this.items.shift(); 
     }
 
+    // Returns a true or false value on whether the queue is empty
     isEmpty() {
         return this.items.length == 0;
     }
@@ -29,14 +34,17 @@ class Pocket {
         this.pocketName = "";
     }
 
+    // Set pocket name
     setName(name) {
         this.pocketName = name;
     }
 
+    // Get pocket name
     getName() {
         return this.pocketName;
     }
 
+    // Add specified URL to pocket
     addURL(URL) {
         if (!this.emptySpace.isEmpty()) {
             this.items[this.emptySpace.dequeue()] = URL;
@@ -46,6 +54,7 @@ class Pocket {
         ++this.numURL; 
     }
 
+    // Add a set of URLs in the form of an array to the pocket
     addSetOfURL(URL) {
         for (var i = 0; i < URL.length; ++i) {
             this.addURL(URL[i]);
@@ -53,6 +62,7 @@ class Pocket {
         this.numURL += URL.length;
     }
 
+    // Remove specified URL from pocket
     removeURL(URL) {
         for (var i = 0; i < URL.length; ++i) {
             if (URL == this.items[i]) {
@@ -63,6 +73,7 @@ class Pocket {
         --this.numURL;
     }
 
+    // Returns a boolean value on whether an ID exists
     existID(ID) {
         for (var i = 0; i < this.itemsID.length; ++i) {
             if (ID == this.itemsID[i]) {
@@ -72,6 +83,7 @@ class Pocket {
         return false
     }
 
+    // Open all URLs in pocket
     flashPocket() {
         for (var i = 0; i < this.items.length; ++i) {
             // Make sure we are not creating a tab for empty spot
@@ -85,6 +97,7 @@ class Pocket {
         }
     }
 
+    // Close all URLs in pocket
     dullPocket() {
         var me = this;
         chrome.tabs.query({},function(tabs){     
@@ -98,7 +111,7 @@ class Pocket {
     }
 }
 
-// Class that holds all of a user's pockets
+// Class that holds all user pockets
 class Garage {
     constructor() {
         this.items = [];
@@ -106,6 +119,7 @@ class Garage {
         this.emptySpace = new Queue();
     }
 
+    // Add a pocket to the Garage
     addPocket(pocket) {
         if (!this.emptySpace.isEmpty()) {
             this.items[this.emptySpace.dequeue()] = pocket;
@@ -115,6 +129,7 @@ class Garage {
         ++this.numPockets; 
     }
 
+    // Remove a pocket from the Garage
     removePocket(pocket) {
         var space = this.items.indexOf(pocket);
         this.items[space] = "";
@@ -122,6 +137,7 @@ class Garage {
         --this.numPockets;
     }
 }
+
 
 // MARK: - Google Chrome Functions
 
@@ -131,7 +147,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting", 
     "https://www.google.com/search?q=michigan+basketball"];
     var pocket = new Pocket();
-    pocket.setName = "Social Pocket";
+    pocket.setName = "Social";
     pocket.addSetOfURL(links);
     pocket.flashPocket();
     //pocket.dullPocket();
