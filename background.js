@@ -1,24 +1,31 @@
+// Flash
 // Copyright Edward Huang 2019
 
 // MARK: - Data Structure Implementations
 
-// Class utilized to reuse memory in Pocket and Garage objects
+// Flash's memory allocator and deallocator with a Queue implementation for Pocket and Garage objects
 class Queue { 
     constructor() { 
         this.items = [];
     } 
     
-    // Add empty spot to queue
+    // REQUIRES: None
+    // MODIFIES: this.items
+    // EFFECTS: Add an empty spot index to queue
     enqueue(element) {     
         this.items.push(element); 
     } 
 
-    // Remove empty spot from queue
+    // REQUIRES: None
+    // MODIFIES: this.items
+    // EFFECTS: Remove an empty spot index from queue and returns it
     dequeue() {
         return this.items.shift(); 
     }
 
-    // Returns a true or false value on whether the queue is empty
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Returns a true or false value on whether the queue is empty
     isEmpty() {
         return this.items.length == 0;
     }
@@ -34,12 +41,16 @@ class Pocket {
         this.pocketName = "";
     }
 
-    // Set pocket name
+    // REQUIRES: None
+    // MODIFIES: this.pocketName
+    // EFFECTS: Sets the pocket name to input name
     setName(name) {
         this.pocketName = name;
     }
 
-    // Get pocket name
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Returns the pocket name
     getName() {
         return this.pocketName;
     }
@@ -73,7 +84,7 @@ class Pocket {
         --this.numURL;
     }
 
-    // Returns a boolean value on whether an ID exists
+    // Returns a boolean value on whether a session ID (the ID of a particular tab) exists
     existID(ID) {
         for (var i = 0; i < this.itemsID.length; ++i) {
             if (ID == this.itemsID[i]) {
@@ -109,6 +120,13 @@ class Pocket {
         });
         this.itemsID = [];
     }
+
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Returns the number of URLs the pocket contains
+    numURLS() {
+        return this.numURL;
+    }
 }
 
 // Class that holds all user pockets
@@ -117,9 +135,80 @@ class Garage {
         this.items = [];
         this.numPockets = 0;
         this.emptySpace = new Queue();
+        this.backgroundImage = "";
+        this.userName = "";
+        this.firstTime = true;
     }
 
-    // Add a pocket to the Garage
+    // REQUIRES: Flash to be opened for the first time
+    // MODIFIES: this.firstTime
+    // EFFECTS: Reads all current tabs that are open and displays them for the user to organize them into pockets
+    readCurrentTabsOpen() {
+        if (this.firstTime) {
+            // Reads and displays current tabs on home page
+            this.firstTime = false;
+        }
+    }
+
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Returns the welcome message to be displayed when home opened
+    welcomeMessage() {
+        if (this.userName == "") {
+            return "" + this.determineTimeOfDay();
+        } else {
+            return "" + this.determineTimeOfDay() + ", " + this.userName;
+        }
+    }
+
+    // REQUIRES: Access to user clock
+    // MODIFIES: None
+    // EFFECTS: Determines the time of day and returns a phrase for the welcome message
+    determineTimeOfDay() {
+        // If morning, return good morning
+        // If afternoon, return afternoon (Inclusive of noon)
+    }
+
+    // REQUIRES: None
+    // MODIFIES: this.backgroundImage
+    // EFFECTS: Set the path of chosen background image
+    setBackgroundImage(path) {
+        this.backgroundImage = path;
+        // Actually change the image in options.html
+    }
+
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Get the path of the current background image
+    getBackgroundImage() {
+        return this.backgroundImage;
+    }
+
+    // REQUIRES: None
+    // MODIFIES: None
+    // Uses default background 
+    restoreDefaultBackground() {
+        // Check that this.backgroundImage is not already blur-breathtaking-clouds.jpg
+        // Set background to blur-breathtaking-clouds.jpg
+    }
+
+    // REQUIRES: None
+    // MODIFIES: this.userName
+    // EFFECTS: Sets the name of the user
+    setUserName(name) {
+        this.userName = name;
+    }
+
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Get the name of the user
+    getUserName() {
+        return this.userName;
+    }
+
+    // REQUIRES: None
+    // MODIFIES: this.items
+    // EFFECTS: Add a pocket to the Garage
     addPocket(pocket) {
         if (!this.emptySpace.isEmpty()) {
             this.items[this.emptySpace.dequeue()] = pocket;
@@ -129,12 +218,21 @@ class Garage {
         ++this.numPockets; 
     }
 
-    // Remove a pocket from the Garage
+    // REQUIRES: None
+    // MODIFIES: this.items
+    // EFFECTS: Remove a pocket from the Garage
     removePocket(pocket) {
         var space = this.items.indexOf(pocket);
         this.items[space] = "";
         this.emptySpace.enqueue(space);
         --this.numPockets;
+    }
+
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Returns the number of pockets the Garage contains
+    numPockets() {
+        return this.numPockets;
     }
 }
 
@@ -151,4 +249,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     pocket.addSetOfURL(links);
     pocket.flashPocket();
     //pocket.dullPocket();
+
+    // Initialize Garage
+    var garage = new Garage();
 });

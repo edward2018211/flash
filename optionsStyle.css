@@ -1,14 +1,17 @@
+/* Flash */
 /* Copyright Edward Huang 2019 */
 
 /* Style */
 header {
     text-align: center;
+    
     animation-name: fadeEffect;
     animation-duration: 2s;
 }
 
 body {
-    background-image: url(../wallpapers/blur-breathtaking-clouds.jpg);
+    background-image: url(../wallpapers/breathtaking-landscape.jpg);
+    background-color: black;
     animation-name: fadeEffect;
     animation-duration: 2s;
     background-size: cover;
@@ -19,11 +22,10 @@ body {
 h5 {
     animation-name: fadeEffect;
     animation-duration: 2s;
-
 }
 
 /* Animations */
 @keyframes fadeEffect {
-    from {opacity: 0;}
-    to {opacity: 1;}
+    from {opacity: 0.0;}
+    to {opacity: 1.0;}
   }
