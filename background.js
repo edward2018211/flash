@@ -223,6 +223,7 @@ class Garage {
     // EFFECTS: Remove a pocket from the Garage
     removePocket(pocket) {
         var space = this.items.indexOf(pocket);
+        // Check if pocket exists
         this.items[space] = "";
         this.emptySpace.enqueue(space);
         --this.numPockets;
