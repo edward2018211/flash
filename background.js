@@ -185,7 +185,7 @@ class Garage {
     }
 
     // REQUIRES: None
-    // MODIFIES: None
+    // MODIFIES: this.backgroundImage
     // Uses default background 
     restoreDefaultBackground() {
         // Check that this.backgroundImage is not already blur-breathtaking-clouds.jpg
