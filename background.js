@@ -4,23 +4,23 @@
 // MARK: - Data Structure Implementations
 
 // Flash's memory allocator and deallocator with a Queue implementation for Pocket and Garage objects
-class Queue { 
-    constructor() { 
+class Queue {
+    constructor() {
         this.items = [];
-    } 
-    
+    }
+
     // REQUIRES: None
     // MODIFIES: this.items
     // EFFECTS: Add an empty spot index to queue
-    enqueue(element) {     
-        this.items.push(element); 
-    } 
+    enqueue(element) {
+        this.items.push(element);
+    }
 
     // REQUIRES: None
     // MODIFIES: this.items
     // EFFECTS: Remove an empty spot index from queue and returns it
     dequeue() {
-        return this.items.shift(); 
+        return this.items.shift();
     }
 
     // REQUIRES: None
@@ -29,7 +29,7 @@ class Queue {
     isEmpty() {
         return this.items.length == 0;
     }
-} 
+}
 
 // Class defining a pocket – a set of URLS that can be flashed or dulled
 class Pocket {
@@ -62,7 +62,7 @@ class Pocket {
         } else {
             this.items.push(URL);
         }
-        ++this.numURL; 
+        ++this.numURL;
     }
 
     // Add a set of URLs in the form of an array to the pocket
@@ -99,9 +99,9 @@ class Pocket {
         for (var i = 0; i < this.items.length; ++i) {
             // Make sure we are not creating a tab for empty spot
             if (this.items[i] != "") {
-                chrome.tabs.create({"url": this.items[i]});
+                chrome.tabs.create({ "url": this.items[i] });
                 var me = this;
-                chrome.tabs.onCreated.addListener(function(tab) {
+                chrome.tabs.onCreated.addListener(function (tab) {
                     me.itemsID.push(tab.id);
                 });
             }
@@ -111,11 +111,11 @@ class Pocket {
     // Close all URLs in pocket
     dullPocket() {
         var me = this;
-        chrome.tabs.query({},function(tabs){     
-            tabs.forEach(function(tab){
-              if (me.existID(tab.id)) {
-                  chrome.tabs.remove(tab.id);
-              }
+        chrome.tabs.query({}, function (tabs) {
+            tabs.forEach(function (tab) {
+                if (me.existID(tab.id)) {
+                    chrome.tabs.remove(tab.id);
+                }
             });
         });
         this.itemsID = [];
@@ -215,7 +215,7 @@ class Garage {
         } else {
             this.items.push(pocket);
         }
-        ++this.numPockets; 
+        ++this.numPockets;
     }
 
     // REQUIRES: None
@@ -241,16 +241,41 @@ class Garage {
 // MARK: - Google Chrome Functions
 
 // Runs when Chrome Extension clicked on
-chrome.browserAction.onClicked.addListener(function(tab) {
-    var links = ["https://mail.google.com/mail/u/0/#inbox", "https://www.instagram.com", 
-    "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting", 
-    "https://www.google.com/search?q=michigan+basketball"];
-    var pocket = new Pocket();
-    pocket.setName = "Social";
-    pocket.addSetOfURL(links);
-    pocket.flashPocket();
-    //pocket.dullPocket();
+chrome.browserAction.onClicked.addListener(function (tab) {
+
+    //message('Hello');
 
     // Initialize Garage
     var garage = new Garage();
+
+    if (garage.firstTime) {
+        // Ask user for their name
+        garage.setUserName("Edward");
+
+        // Save in local storage
+        chrome.storage.sync.set({ 'username': garage.userName }, function () {
+            // Notify that we saved.
+            message('Settings saved');
+        });
+    }
+
+    var links = ["https://mail.google.com/mail/u/0/#inbox", "https://www.instagram.com",
+        "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting",
+        "https://www.google.com/search?q=michigan+basketball"];
+    var pocket = new Pocket();
+    pocket.setName = "Social";
+    pocket.addSetOfURL(links);
+
+    // Get from local storage with key
+    chrome.storage.sync.get(['username'], function (result) {
+        // console.log('Value currently is ' + result.key);
+
+        if (result.username == "Edward") {
+            pocket.addURL("https://github.com/Avik-Jain/100-Days-Of-ML-Code");
+        }
+    });
+
+    pocket.flashPocket();
+
+    //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
 });
