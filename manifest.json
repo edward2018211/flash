@@ -2,7 +2,7 @@
     "name": "Pockets",
     "version": "0.1",
     "manifest_version": 2,
-    "description": "Loads your favorite tabs in a flash!",
+    "description": "Organize your tabs in a flash!",
     "options_page": "options.html",
     "permissions": ["storage", "tabs"],
     "browser_action": {
