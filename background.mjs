@@ -1,11 +1,11 @@
 // MARK: - Google Chrome Functions
 
-import "Garage";
-import "Pocket";
+import { Garage } from './Garage.mjs';
+import { Pocket } from './Pocket.mjs';
 
 // Runs when Chrome Extension clicked on
 chrome.browserAction.onClicked.addListener(function (tab) {
-
+    var garage = new Garage();
     //message('Hello');
 
     // Initialize Garage
