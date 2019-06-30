@@ -30,8 +30,8 @@ class Pocket {
     // MODIFIES: this.items
     // EFFECTS: Adds input URL to pocket if it doesn't already exist
     addURL(URL) {
-        if (!existURL(URL)) {
-            this.items.set(URL);
+        if (!this.existURL(URL)) {
+            this.items.set(URL, "");
         }
     }
 
@@ -46,13 +46,10 @@ class Pocket {
 
     // REQUIRES: URL must be a string
     // MODIFIES: this.items
-    // Remove specified URL from pocket
+    // EFFECTS: Remove specified URL from pocket
     removeURL(URL) {
-        for (var i = 0; i < URL.length; ++i) {
-            if (URL == this.items[i]) {
-                this.items[i] = "";
-                this.emptySpace.enqueue(i);
-            }
+        if (this.existURL(URL)) {
+            this.items.delete(URL);
         }
     }
 
@@ -80,38 +77,35 @@ class Pocket {
         return false
     }
 
-    // Open all URLs in pocket
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Flash all URLs in pocket
     flashPocket() {
-        for (var i = 0; i < this.items.length; ++i) {
-            // Make sure we are not creating a tab for empty spot
-            if (this.items[i] != "") {
-                chrome.tabs.create({ "url": this.items[i] });
-                var me = this;
-                chrome.tabs.onCreated.addListener(function (tab) {
-                    me.itemsID.push(tab.id);
-                });
-            }
+        for (var [key, value] of this.items.entries()) {
+            chrome.tabs.create({ "url": key });
+            chrome.tabs.onCreated.addListener(function (tab) {
+                value = tab.id;
+                //me.itemsID.push(tab.id);
+            });
         }
     }
 
-    // Close all URLs in pocket
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Dull all URLs in pocket
     dullPocket() {
-        var me = this;
         chrome.tabs.query({}, function (tabs) {
             tabs.forEach(function (tab) {
-                if (me.existID(tab.id)) {
-                    chrome.tabs.remove(tab.id);
-                }
+                chrome.tabs.remove(tab.id);
             });
         });
-        this.itemsID = [];
     }
 
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns the number of URLs the pocket contains
     numURLS() {
-        return this.numURL;
+        return this.items.size();
     }
 }
 
@@ -232,6 +226,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     //message('Hello');
 
     // Initialize Garage
+    /**
     var garage = new Garage();
 
     if (garage.firstTime) {
@@ -244,14 +239,14 @@ chrome.browserAction.onClicked.addListener(function (tab) {
             message('Settings saved');
         });
     }
-
+    */
     var links = ["https://mail.google.com/mail/u/0/#inbox", "https://www.instagram.com",
         "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting",
         "https://www.google.com/search?q=michigan+basketball"];
     var pocket = new Pocket();
     pocket.setName = "Social";
     pocket.addSetOfURL(links);
-
+    /**
     // Get from local storage with key
     chrome.storage.sync.get(['username'], function (result) {
         // console.log('Value currently is ' + result.key);
@@ -260,6 +255,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
             pocket.addURL("https://github.com/Avik-Jain/100-Days-Of-ML-Code");
         }
     });
+    */
 
     pocket.flashPocket();
 
