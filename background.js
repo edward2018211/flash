@@ -3,40 +3,11 @@
 
 // MARK: - Data Structure Implementations
 
-// Flash's memory allocator and deallocator with a Queue implementation for Pocket and Garage objects
-class Queue {
-    constructor() {
-        this.items = [];
-    }
-
-    // REQUIRES: None
-    // MODIFIES: this.items
-    // EFFECTS: Add an empty spot index to queue
-    enqueue(element) {
-        this.items.push(element);
-    }
-
-    // REQUIRES: None
-    // MODIFIES: this.items
-    // EFFECTS: Remove an empty spot index from queue and returns it
-    dequeue() {
-        return this.items.shift();
-    }
-
-    // REQUIRES: None
-    // MODIFIES: None
-    // EFFECTS: Returns a true or false value on whether the queue is empty
-    isEmpty() {
-        return this.items.length == 0;
-    }
-}
-
 // Class defining a pocket – a set of URLS that can be flashed or dulled
 class Pocket {
     constructor() {
-        this.items = new Array();
-        this.itemsID = new Array();
-        this.emptySpace = new Queue();
+        //this.items uses the itemsID as its key and the string URL as its item
+        this.items = new Map();
         this.numURL = 0;
         this.pocketName = "";
     }
@@ -55,9 +26,12 @@ class Pocket {
         return this.pocketName;
     }
 
-    // Add specified URL to pocket
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Returns the pocket name
     addURL(URL) {
         if (!this.emptySpace.isEmpty()) {
+
             this.items[this.emptySpace.dequeue()] = URL;
         } else {
             this.items.push(URL);
