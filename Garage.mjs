@@ -2,7 +2,7 @@
 // Copyright Edward Huang 2019
 
 // Class that holds all user pockets
-export class Garage {
+export default class Garage {
     constructor() {
         this.items = [];
         this.numPockets = 0;

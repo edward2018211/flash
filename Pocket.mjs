@@ -2,9 +2,9 @@
 // Copyright Edward Huang 2019
 
 // Class defining a pocket – a set of URLS that can be flashed or dulled
-export class Pocket {
+export default class Pocket {
     constructor() {
-        //this.items uses the  URL as its key and the itemsID as its value
+        // this.items uses the  URL as its key and the itemsID as its value
         // If no itemsID is assigned yet, the value is an empty string
         this.items = new Map();
         this.pocketName = "";
@@ -72,7 +72,7 @@ export class Pocket {
     flashPocket() {
         for (const key of this.items.keys()) {
             chrome.tabs.create({ "url": key });
-            this.items.set(key, chrome.tabs.onCreated.addListener(function (tab) { return tab.id }));
+            //this.items.set(key, chrome.tabs.onCreated.addListener(function (tab) { return tab.id }));
         }
     }
     // REQUIRES: None
