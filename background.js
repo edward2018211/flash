@@ -30,9 +30,8 @@ class Pocket {
     // MODIFIES: this.items
     // EFFECTS: Adds input URL to pocket if it doesn't already exist
     addURL(URL) {
-        if (!this.existURL(URL)) {
-            this.items.set(URL, "");
-        }
+        // There is no need to check if the URL already exists because it will replaced anyways
+        this.items.set(URL, "");
     }
 
     // REQUIRES: URL must be an array of strings
@@ -85,7 +84,6 @@ class Pocket {
             chrome.tabs.create({ "url": key });
             chrome.tabs.onCreated.addListener(function (tab) {
                 value = tab.id;
-                //me.itemsID.push(tab.id);
             });
         }
     }
@@ -94,9 +92,12 @@ class Pocket {
     // MODIFIES: None
     // EFFECTS: Dull all URLs in pocket
     dullPocket() {
+        var me = this;
         chrome.tabs.query({}, function (tabs) {
             tabs.forEach(function (tab) {
-                chrome.tabs.remove(tab.id);
+                if (me.existID(tab.id)) {
+                    chrome.tabs.remove(tab.id);
+                }
             });
         });
     }
@@ -258,6 +259,6 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     */
 
     pocket.flashPocket();
-
+    pocket.dullPocket();
     //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
 });
