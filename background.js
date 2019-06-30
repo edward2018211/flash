@@ -6,13 +6,13 @@
 // Class defining a pocket – a set of URLS that can be flashed or dulled
 class Pocket {
     constructor() {
-        //this.items uses the itemsID as its key and the string URL as its item
+        //this.items uses the  URL as its key and the itemsID as its value
+        // If no itemsID is assigned yet, the value is an empty string
         this.items = new Map();
-        this.numURL = 0;
         this.pocketName = "";
     }
 
-    // REQUIRES: None
+    // REQUIRES: input name must be a string
     // MODIFIES: this.pocketName
     // EFFECTS: Sets the pocket name to input name
     setName(name) {
@@ -26,27 +26,26 @@ class Pocket {
         return this.pocketName;
     }
 
-    // REQUIRES: None
-    // MODIFIES: None
-    // EFFECTS: Returns the pocket name
+    // REQUIRES: URL must be a string
+    // MODIFIES: this.items
+    // EFFECTS: Adds input URL to pocket if it doesn't already exist
     addURL(URL) {
-        if (!this.emptySpace.isEmpty()) {
-
-            this.items[this.emptySpace.dequeue()] = URL;
-        } else {
-            this.items.push(URL);
+        if (!existURL(URL)) {
+            this.items.set(URL);
         }
-        ++this.numURL;
     }
 
-    // Add a set of URLs in the form of an array to the pocket
+    // REQUIRES: URL must be an array of strings
+    // MODIFIES: this.items
+    // EFFECTS: Add a set of URLs to pocket
     addSetOfURL(URL) {
         for (var i = 0; i < URL.length; ++i) {
             this.addURL(URL[i]);
         }
-        this.numURL += URL.length;
     }
 
+    // REQUIRES: URL must be a string
+    // MODIFIES: this.items
     // Remove specified URL from pocket
     removeURL(URL) {
         for (var i = 0; i < URL.length; ++i) {
@@ -55,14 +54,27 @@ class Pocket {
                 this.emptySpace.enqueue(i);
             }
         }
-        --this.numURL;
     }
 
-    // Returns a boolean value on whether a session ID (the ID of a particular tab) exists
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Returns a boolean value on whether a URL exists
+    existURL(URL) {
+        for (const key of this.items.keys()) {
+            if (key == URL) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // REQUIRES: None
+    // MODIFIES: None
+    // EFFECTS: Returns a boolean value on whether a session ID (the ID of a particular tab) exists
     existID(ID) {
-        for (var i = 0; i < this.itemsID.length; ++i) {
-            if (ID == this.itemsID[i]) {
-                return true
+        for (const value of this.items.values()) {
+            if (value == ID) {
+                return true;
             }
         }
         return false
