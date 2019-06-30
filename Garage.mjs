@@ -1,5 +1,8 @@
+// Flash
+// Copyright Edward Huang 2019
+
 // Class that holds all user pockets
-class Garage {
+export class Garage {
     constructor() {
         this.items = [];
         this.numPockets = 0;
