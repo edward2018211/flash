@@ -86,6 +86,7 @@ class Pocket {
             tabs.forEach(function (tab) {
                 if (me.existID(tab.id)) {
                     chrome.tabs.remove(tab.id);
+                    console.log("Removed");
                 }
             });
         });
@@ -252,6 +253,6 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     if (pocket.allHasIDAssigned()) {
         console.log("ID system working");
     }
-    //pocket.dullPocket();
+    pocket.dullPocket();
     //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
 });
