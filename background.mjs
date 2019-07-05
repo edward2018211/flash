@@ -205,7 +205,7 @@ class Garage {
     // MODIFIES: None
     // EFFECTS: Returns the number of pockets the Garage contains
     numPockets() {
-        return this.numPockets;
+        return this.numPockets.size();
     }
 }
 
