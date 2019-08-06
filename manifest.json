@@ -1,13 +1,13 @@
 {
     "name": "Pockets",
-    "version": "0.1",
+    "version": "1.0",
     "manifest_version": 2,
     "description": "Organize your tabs in a flash!",
     "options_page": "options.html",
     "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'" ,
     "permissions": ["storage", "tabs"],
     "browser_action": {
-        "default_icon": "icons8-lightning-bolt-64.png"
+        "default_icon": "logo_transparent.png"
     },
     "background": {
         "persistent": false,
