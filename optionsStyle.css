@@ -2,35 +2,14 @@
 /* Copyright Edward Huang 2019 */
 
 /* Style */
-header {
-    text-align: center;
-    
-    animation-name: fadeEffect;
-    animation-duration: 2s;
-}
-
 body {
     background-image: url(../wallpapers/breathtaking-landscape.jpg);
     background-color: black;
-    animation-name: fadeEffect;
-    animation-duration: 2s;
     font-family: 'Quicksand', sans-serif;
     font-weight: 300;
     background-size: cover;
     background-position: 0px -180px;
     text-align: center;
-}
-
-h1, h2, h3, h4, h6 {
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 300;
-}
-
-h5 {
-    animation-name: fadeEffect;
-    animation-duration: 2s;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 300;
 }
 
 /* Animations */

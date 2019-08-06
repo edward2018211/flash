@@ -11,19 +11,28 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="/optionsStyle.css">
     <title>Pocket Launch</title>
     <!-- Run when page loads -->
     <script src="background.js"></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg" style="background-color: #fcfc07;">
-        <a class="navbar-brand" href="https://github.com/edward2018211/flash">Flash</a>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <a class="navbar-brand mr-auto" href="https://github.com/edward2018211/flash">
+            <img src="icons8-lightning-bolt-64.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            Flash
+        </a>
+
+        <a class="navbar-brand" href="#">
+            Settings
+        </a>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
     </nav>
 
     <div class="card" style="width: 18rem; margin: 20px">
@@ -39,9 +48,6 @@
             </div>
         </div>
     </div>
-
-    <div id="status"></div>
-    <button id="save">Save</button>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
