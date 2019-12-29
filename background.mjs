@@ -6,7 +6,7 @@
 // Class defining a pocket – a set of URLS that can be flashed or dulled
 class Pocket {
     constructor() {
-        // this.items uses the  URL as its key and the itemsID as its value
+        // this.items uses the URL as its key and the itemsID as its value
         // If no itemsID is assigned yet, the value is an empty string
         this.items = new Map();
         this.pocketName = "";
@@ -72,9 +72,12 @@ class Pocket {
     // MODIFIES: None
     // EFFECTS: Flash all URLs in pocket
     flashPocket() {
+        var me = this;
         for (const key of this.items.keys()) {
-            chrome.tabs.create({ "url": key });
-            this.items.set(key, chrome.tabs.onCreated.addListener(function (tab) { return tab.id }));
+            chrome.tabs.create({ "url": key }, function(tab) {
+                console.log(tab.id);
+                me.items.set(key, tab.id);
+            });
         }
     }
     // REQUIRES: None
@@ -253,6 +256,6 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     if (pocket.allHasIDAssigned()) {
         console.log("ID system working");
     }
-    pocket.dullPocket();
+    // pocket.dullPocket();
     //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
 });
