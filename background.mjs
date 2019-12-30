@@ -216,6 +216,8 @@ class Garage {
 
 // Runs when Chrome Extension clicked on
 chrome.browserAction.onClicked.addListener(function (tab) {
+    // chrome.tabs.create({'url': 'chrome-extension://ahleapljgblfjbadnmihppmnoeddejac/options.html'});
+
     //message('Hello');
 
     // Initialize Garage
@@ -252,10 +254,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     */
 
     pocket.flashPocket();
-    console.log("Console log system working");
-    if (pocket.allHasIDAssigned()) {
-        console.log("ID system working");
-    }
+    
     // pocket.dullPocket();
     //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
 });
