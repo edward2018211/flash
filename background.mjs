@@ -1,7 +1,26 @@
 // Flash
 // Copyright Edward Huang 2019
 
-// MARK: - Google Chrome Functions
+import {Pocket} from "./common.mjs";
+
+chrome.runtime.onInstalled.addListener(() => {
+    //load some test data pockets
+    loadTestPockets();
+});
+
+function loadTestPockets() {
+    let pockets = [];
+    for (let i = 0; i < 3; i++) {
+        let pocket = new Pocket();
+        pocket.name = "pocket " + i;
+        pocket.addSetOfURL([
+            "google.com",
+            "youtube.com"
+        ])
+        pockets.push(pocket);
+    }
+    chrome.storage.sync.set({pockets: pockets})
+}
 
 // Runs when Chrome Extension clicked on
 chrome.browserAction.onClicked.addListener(function (tab) {
@@ -11,9 +30,9 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 
     // Initialize Garage
     /**
-    var garage = new Garage();
+     var garage = new Garage();
 
-    if (garage.firstTime) {
+     if (garage.firstTime) {
         // Ask user for their name
         garage.setUserName("Edward");
 
@@ -23,7 +42,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
             message('Settings saved');
         });
     }
-    */
+     */
   /*  var links = ["https://mail.google.com/mail/u/0/#inbox", "https://www.instagram.com",
         "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting",
         "https://www.google.com/search?q=michigan+basketball"];

@@ -163,4 +163,15 @@ export class Garage {
     }
 }
 
-export {Pocket, Garage};
+/**
+ * Loads the stored array of pockets.
+ * @param callback callback when pockets are loaded
+ */
+export function loadPockets(callback) {
+    chrome.storage.sync.get(["pockets"], (result) => {
+        let pockets;
+        if (result.pockets === undefined) pockets = [];
+        else pockets = result.pockets.map(p => Object.assign(new Pocket(), p));
+        callback(pockets);
+    })
+}
