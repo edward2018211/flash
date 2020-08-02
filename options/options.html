@@ -24,7 +24,7 @@
     <script crossorigin="anonymous"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="options.js"></script>
+    <script src="options.js" type="module"></script>
 </head>
 
 <body>
@@ -39,25 +39,28 @@
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     </nav>
 
-    <div class="container-fluid text-center form-inline justify-content-center">
-        <div class="card" style="width: 15rem; margin: 20px">
-            <div class="card-header">
-                <h5 class="card-title">CHEM 130</h5>
-            </div>
-            <div class="card-body">
-                <p class="card-text">3 tabs open</p>
 
-                <div class="container text-center">
-                    <button class="btn btn-sm btn-block btn-outline-dark" type="button">Edit</button>
-                    <button class="btn btn-sm btn-block btn-dark" type="button">Pocket</button>
+    <div class="container-fluid text-center form-inline justify-content-center" id="pocket-container">
+        <template id="pocket-template">
+            <div class="card" style="width: 15rem; margin: 20px">
+                <div class="card-header">
+                    <h5 class="card-title pocket-name">Name</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text pocket-message"></p>
+
+                    <div class="container text-center">
+                        <button class="btn btn-sm btn-block btn-outline-dark" type="button">Edit</button>
+                        <button class="btn btn-sm btn-block btn-dark" type="button">Launch</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
 
         <div class="card" style="width: 15rem; margin: 20px">
             <div class="card-header">
@@ -87,7 +90,6 @@
         </div>
 
     </div>
-
 </body>
 
 </html>

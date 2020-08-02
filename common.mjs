@@ -1,13 +1,19 @@
 // Class defining a pocket – a set of URLS that can be flashed or dulled
 export class Pocket {
-    items;
-    name;
 
-    constructor() {
+    constructor(jsObj) {
+        if (jsObj === undefined) {
+            this.name = "";
+            this.items = new Map();
+        } else {
+            this.name = jsObj.name;
+            this.items = new Map();
+            for (let [key, value] of Object.entries(jsObj)) {
+                this.items.set(key, value)
+            }
+        }
         // this.items uses the URL as its key and the itemsID as its value
         // If no itemsID is assigned yet, the value is an empty string
-        this.items = new Map();
-        this.name = "";
     }
 
     setName(name) {
@@ -20,7 +26,7 @@ export class Pocket {
 
     addURL(URL) {
         // There is no need to check if the URL already exists because it will replaced anyways
-        this.items.set(URL, "");
+        this.items[URL] = ""
     }
 
     addSetOfURL(URL) {
@@ -36,12 +42,7 @@ export class Pocket {
     }
 
     existURL(URL) {
-        for (const key of this.items.keys()) {
-            if (key == URL) {
-                return true;
-            }
-        }
-        return false;
+        return this.items.has(URL)
     }
 
     existID(ID) {
@@ -75,8 +76,8 @@ export class Pocket {
         });
     }
 
-    numURLS() {
-        return this.items.size();
+    numURLs() {
+        return this.items.size;
     }
 
     allHasIDAssigned() {
@@ -167,11 +168,17 @@ export class Garage {
  * Loads the stored array of pockets.
  * @param callback callback when pockets are loaded
  */
+
+/*
+ * Each pocket stored as json.
+ */
 export function loadPockets(callback) {
     chrome.storage.sync.get(["pockets"], (result) => {
         let pockets;
         if (result.pockets === undefined) pockets = [];
-        else pockets = result.pockets.map(p => Object.assign(new Pocket(), p));
+        else pockets = result.pockets.map(p => {
+            return new Pocket(p);
+        });
         callback(pockets);
     })
 }
