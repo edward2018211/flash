@@ -1,4 +1,4 @@
-import {loadPockets} from "../common.mjs";
+import {loadPockets} from "/src/common.mjs";
 
 // loaded as array of pockets
 let pockets;

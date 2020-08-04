@@ -64,5 +64,5 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     // pocket.flashPocket();
     
     // pocket.dullPocket();
-    //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
+    //$("#body").css('background-image', url('assets/wallpapers/aerial - clouds.jpg'));
 });
