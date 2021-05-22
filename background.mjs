@@ -1,5 +1,5 @@
 // Flash
-// Copyright Edward Huang 2019
+// Copyright Edward Huang 2021
 
 // MARK: Data Structure Implementations
 
@@ -11,18 +11,21 @@ class Pocket {
         this.items = new Map();
         this.pocketName = "";
     }
+
     // REQUIRES: input name must be a string
     // MODIFIES: this.pocketName
     // EFFECTS: Sets the pocket name to input name
     setName(name) {
         this.pocketName = name;
     }
+
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns the pocket name
     getName() {
         return this.pocketName;
     }
+
     // REQUIRES: URL must be a string
     // MODIFIES: this.items
     // EFFECTS: Adds input URL to pocket if it doesn't already exist
@@ -30,7 +33,8 @@ class Pocket {
         // There is no need to check if the URL already exists because it will replaced anyways
         this.items.set(URL, "");
     }
-    // REQUIRES: URL must be an array of strings
+
+    // REQUIRES: URL is an array of strings
     // MODIFIES: this.items
     // EFFECTS: Add a set of URLs to pocket
     addSetOfURL(URL) {
@@ -38,6 +42,7 @@ class Pocket {
             this.addURL(URL[i]);
         }
     }
+
     // REQUIRES: URL must be a string
     // MODIFIES: this.items
     // EFFECTS: Remove specified URL from pocket
@@ -46,6 +51,7 @@ class Pocket {
             this.items.delete(URL);
         }
     }
+
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns a boolean value on whether a URL exists
@@ -57,6 +63,7 @@ class Pocket {
         }
         return false;
     }
+
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns a boolean value on whether a session ID (the ID of a particular tab) exists
@@ -68,6 +75,7 @@ class Pocket {
         }
         return false;
     }
+
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Flash all URLs in pocket
@@ -80,9 +88,10 @@ class Pocket {
             });
         }
     }
+
     // REQUIRES: None
     // MODIFIES: None
-    // EFFECTS: Dull all URLs in pocket
+    // EFFECTS: Dull all URLs in pocket that are active in browser
     dullPocket() {
         var me = this;
         chrome.tabs.query({}, function (tabs) {
@@ -94,12 +103,14 @@ class Pocket {
             });
         });
     }
+
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns the number of URLs the pocket contains
     numURLS() {
         return this.items.size();
     }
+
     // REQUIRES: Use only after a pocket has been flashed and before it is dulled
     // MODIFIES: None
     // EFFECTS: Determines if every value of each key-value pair contains a session ID
@@ -123,6 +134,7 @@ class Garage {
         this.userName = "";
         this.firstTime = true;
     }
+
     // REQUIRES: Flash to be opened for the first time
     // MODIFIES: this.firstTime
     // EFFECTS: Reads all current tabs that are open and displays them for the user to organize them into pockets
@@ -132,24 +144,34 @@ class Garage {
             this.firstTime = false;
         }
     }
+
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns the welcome message to be displayed when home opened
     welcomeMessage() {
         if (this.userName == "") {
-            return "" + this.determineTimeOfDay();
+            return this.determineTimeOfDay();
         }
         else {
-            return "" + this.determineTimeOfDay() + ", " + this.userName;
+            return this.determineTimeOfDay() + ", " + this.userName;
         }
     }
+
     // REQUIRES: Access to user clock
     // MODIFIES: None
     // EFFECTS: Determines the time of day and returns a phrase for the welcome message
     determineTimeOfDay() {
         // If morning, return good morning
         // If afternoon, return afternoon (Inclusive of noon)
+        if ("morning" == "morning") {
+            return "Good Morning";
+        } else if ("afternoon" == "afternoon") {
+            return "Good Afternoon";
+        } else {
+            return "Good Evening";
+        }
     }
+
     // REQUIRES: None
     // MODIFIES: this.backgroundImage
     // EFFECTS: Set the path of chosen background image
@@ -163,6 +185,7 @@ class Garage {
     getBackgroundImage() {
         return this.backgroundImage;
     }
+
     // REQUIRES: None
     // MODIFIES: this.backgroundImage
     // Uses default background 
@@ -170,18 +193,21 @@ class Garage {
         // Check that this.backgroundImage is not already blur-breathtaking-clouds.jpg
         // Set background to blur-breathtaking-clouds.jpg
     }
+
     // REQUIRES: None
     // MODIFIES: this.userName
     // EFFECTS: Sets the name of the user
     setUserName(name) {
         this.userName = name;
     }
+
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Get the name of the user
     getUserName() {
         return this.userName;
     }
+
     // REQUIRES: None
     // MODIFIES: this.items
     // EFFECTS: Add a pocket to the Garage
@@ -194,6 +220,7 @@ class Garage {
         }
         ++this.numPockets;
     }
+
     // REQUIRES: None
     // MODIFIES: this.items
     // EFFECTS: Remove a pocket from the Garage
@@ -204,6 +231,7 @@ class Garage {
         this.emptySpace.enqueue(space);
         --this.numPockets;
     }
+    
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns the number of pockets the Garage contains
@@ -254,7 +282,5 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     */
 
     pocket.flashPocket();
-    
-    // pocket.dullPocket();
     //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
 });
