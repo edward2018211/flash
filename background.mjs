@@ -1,29 +1,27 @@
 // Flash
 // Copyright Edward Huang 2021
 
-// MARK: Data Structure Implementations
-
 // Class defining a pocket – a set of URLS that can be flashed or dulled
 class Pocket {
     constructor() {
         // this.items uses the URL as its key and the itemsID as its value
         // If no itemsID is assigned yet, the value is an empty string
         this.items = new Map();
-        this.pocketName = "";
+        this.name = "";
     }
 
     // REQUIRES: input name must be a string
     // MODIFIES: this.pocketName
     // EFFECTS: Sets the pocket name to input name
     setName(name) {
-        this.pocketName = name;
+        this.name = name;
     }
 
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns the pocket name
     getName() {
-        return this.pocketName;
+        return this.name;
     }
 
     // REQUIRES: URL must be a string
@@ -56,12 +54,7 @@ class Pocket {
     // MODIFIES: None
     // EFFECTS: Returns a boolean value on whether a URL exists
     existURL(URL) {
-        for (const key of this.items.keys()) {
-            if (key == URL) {
-                return true;
-            }
-        }
-        return false;
+        return this.items.has(URL);
     }
 
     // REQUIRES: None
@@ -108,7 +101,7 @@ class Pocket {
     // MODIFIES: None
     // EFFECTS: Returns the number of URLs the pocket contains
     numURLS() {
-        return this.items.size();
+        return this.items.size;
     }
 
     // REQUIRES: Use only after a pocket has been flashed and before it is dulled
@@ -231,7 +224,7 @@ class Garage {
         this.emptySpace.enqueue(space);
         --this.numPockets;
     }
-    
+
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns the number of pockets the Garage contains
@@ -239,8 +232,6 @@ class Garage {
         return this.numPockets.size();
     }
 }
-
-// MARK: - Google Chrome Functions
 
 // Runs when Chrome Extension clicked on
 chrome.browserAction.onClicked.addListener(function (tab) {
