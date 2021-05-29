@@ -1,7 +1,7 @@
 // Flash
 // Copyright Edward Huang 2021
 
-// Class defining a pocket – a set of URLS that can be flashed or dulled
+// Class defining a pocket – a set of URLS that can be flashed
 class Pocket {
     constructor() {
         this.items = [];
@@ -66,7 +66,7 @@ class Pocket {
     // REQUIRES: None
     // MODIFIES: None
     // EFFECTS: Returns the number of URLs the pocket contains
-    numURLS() {
+    numURLs() {
         return this.item.length;
     }
 }
@@ -127,38 +127,69 @@ class Garage {
     }
 }
 
-// Runs when Chrome Extension clicked on
-chrome.browserAction.onClicked.addListener(function (tab) {
-    //chrome.tabs.create({'url': 'chrome-extension://ahleapljgblfjbadnmihppmnoeddejac/options.html'});
-
-    //message('Hello');
-
-    // Initialize Garage
-    var garage = new Garage();
-    var links = ["https://mail.google.com/mail/u/0/#inbox", "https://www.instagram.com",
-        "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting",
-        "https://www.google.com/search?q=michigan+basketball"];
-    var pocket = new Pocket();
-    pocket.setName("Social");
-    pocket.addSetOfURL(links);
-    garage.addPocket(pocket);
-    
-    // Store user's parage to local storage
-    chrome.storage.sync.set({'user_garage': JSON.stringify(garage)}, function() {
-        console.log('Value is set to ' + JSON.stringify(garage));
-    });
-
+// Retrieves from storage and adds pockets
+document.addEventListener('DOMContentLoaded', function() {
     // Get from local storage with key
     chrome.storage.sync.get(['user_garage'], function (result) {
-        console.log(result.user_garage);
+        var pocket_generator = document.getElementById("pocket_generator");
+        var paragraph = document.createElement('p');
+        var bold = document.createElement('b');
+
+        if (!result.user_garage) {
+            bold.appendChild(document.createTextNode("You currently don't have any pockets."));
+            paragraph.appendChild(bold);
+            pocket_generator.appendChild(paragraph);
+            return;
+        } else {
+            bold.appendChild(document.createTextNode("Your Pockets"));
+            paragraph.appendChild(bold);
+            pocket_generator.appendChild(paragraph);
+        }
+
         var garage = Object.assign(new Garage, JSON.parse(result.user_garage));
 
         for (let val of garage.getPocket()) {
-            console.log(val);
             var pocket = Object.assign(new Pocket, val);
-            pocket.flashPocket();
+            var button = document.createElement("button");
+            button.addEventListener("click", function() { pocket.flashPocket(); });
+            button.appendChild(document.createTextNode(pocket.getName()));
+            pocket_generator.appendChild(button);
         }
     });
+})
+
+// // Runs when Chrome Extension clicked on
+// chrome.browserAction.onClicked.addListener(function (tab) {
+//     //chrome.tabs.create({'url': 'chrome-extension://ahleapljgblfjbadnmihppmnoeddejac/options.html'});
+
+//     //message('Hello');
+
+//     // Initialize Garage
+//     var garage = new Garage();
+//     var links = ["https://mail.google.com/mail/u/0/#inbox", "https://www.instagram.com",
+//         "https://www.facebook.com/", "https://www.reddit.com/r/uofm/new/", "https://www.google.com/search?q=michigan+football+recruiting",
+//         "https://www.google.com/search?q=michigan+basketball"];
+//     var pocket = new Pocket();
+//     pocket.setName("Social");
+//     pocket.addSetOfURL(links);
+//     garage.addPocket(pocket);
     
-    //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
-});
+//     // Store user's garage to local storage
+//     // chrome.storage.sync.set({'user_garage': JSON.stringify(garage)}, function() {
+//     //     console.log('Value is set to ' + JSON.stringify(garage));
+//     // });
+
+//     // Get from local storage with key
+//     chrome.storage.sync.get(['user_garage'], function (result) {
+//         console.log(result.user_garage);
+//         var garage = Object.assign(new Garage, JSON.parse(result.user_garage));
+
+//         for (let val of garage.getPocket()) {
+//             console.log(val);
+//             var pocket = Object.assign(new Pocket, val);
+//             pocket.flashPocket();
+//         }
+//     });
+    
+//     //$("#body").css('background-image', url('../wallpapers/aerial - clouds.jpg'));
+// });
