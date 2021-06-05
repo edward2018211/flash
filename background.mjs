@@ -134,11 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get from local storage with key
     chrome.storage.sync.get(['user_garage'], function (result) {
         var pocket_generator = document.getElementById("pocket_generator");
-        var title_message = result.user_garage ? "Your Pockets" : "You currently don't have any pockets.";
-        
-        pocket_generator.appendChild(document.createElement('b').appendChild(document.createTextNode(title_message)));
+        var no_pocket_message = "You currently don't have any pockets.";
 
         if (!result.user_garage) {
+            pocket_generator.appendChild(document.createElement('b').appendChild(document.createTextNode(no_pocket_message)));
             return;
         }
 
@@ -172,7 +171,7 @@ function card_builder(pocket) {
 
     var card_text = document.createElement('p');
     card_text.classList.add('card-text');
-    card_body.appendChild(card_text.appendChild(document.createTextNode(pocket.numURLs().toString())));
+    card_body.appendChild(card_text.appendChild(document.createTextNode(pocket.numURLs().toString() + ' links')));
 
     var container = document.createElement('div')
     container.classList.add('container', 'text-center');
