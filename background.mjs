@@ -67,7 +67,7 @@ class Pocket {
     // MODIFIES: None
     // EFFECTS: Returns the number of URLs the pocket contains
     numURLs() {
-        return this.item.length;
+        return this.items.length;
     }
 }
 
@@ -127,36 +127,90 @@ class Garage {
     }
 }
 
+
+
 // Retrieves from storage and adds pockets
 document.addEventListener('DOMContentLoaded', function() {
     // Get from local storage with key
     chrome.storage.sync.get(['user_garage'], function (result) {
         var pocket_generator = document.getElementById("pocket_generator");
-        var paragraph = document.createElement('p');
-        var bold = document.createElement('b');
+        var title_message = result.user_garage ? "Your Pockets" : "You currently don't have any pockets.";
+        
+        pocket_generator.appendChild(document.createElement('b').appendChild(document.createTextNode(title_message)));
 
         if (!result.user_garage) {
-            bold.appendChild(document.createTextNode("You currently don't have any pockets."));
-            paragraph.appendChild(bold);
-            pocket_generator.appendChild(paragraph);
             return;
-        } else {
-            bold.appendChild(document.createTextNode("Your Pockets"));
-            paragraph.appendChild(bold);
-            pocket_generator.appendChild(paragraph);
         }
 
         var garage = Object.assign(new Garage, JSON.parse(result.user_garage));
 
         for (let val of garage.getPocket()) {
             var pocket = Object.assign(new Pocket, val);
-            var button = document.createElement("button");
-            button.addEventListener("click", function() { pocket.flashPocket(); });
-            button.appendChild(document.createTextNode(pocket.getName()));
-            pocket_generator.appendChild(button);
+            var card = card_builder(pocket);
+            pocket_generator.appendChild(card);
         }
     });
-})
+});
+
+function card_builder(pocket) {
+    var card_outer = document.createElement("div");
+    card_outer.classList.add("card");
+    card_outer.style.width = '15rem';
+    card_outer.style.margin = '20px';
+    
+    var card_header = document.createElement("div");
+    card_header.classList.add("card-header");
+
+    var card_title = document.createElement('h5');
+    card_title.classList.add('card-title');
+    card_title.appendChild(document.createTextNode(pocket.getName()));
+
+    card_header.appendChild(card_title);
+
+    var card_body = document.createElement('div');
+    card_body.classList.add('card-body');
+
+    var card_text = document.createElement('p');
+    card_text.classList.add('card-text');
+    card_body.appendChild(card_text.appendChild(document.createTextNode(pocket.numURLs().toString())));
+
+    var container = document.createElement('div')
+    container.classList.add('container', 'text-center');
+    var edit_button = document.createElement('button');
+    edit_button.classList.add('btn', 'btn-sm', 'btn-block', 'btn-outline-dark');
+    edit_button.type = 'button';
+    edit_button.appendChild(document.createTextNode('Edit'));
+
+    var launch_button = document.createElement('button');
+    launch_button.classList.add('btn', 'btn-sm', 'btn-block', 'btn-dark');
+    launch_button.type = 'button';
+    launch_button.appendChild(document.createTextNode('Launch'));
+    launch_button.addEventListener("click", function() { pocket.flashPocket(); });
+
+    container.appendChild(edit_button);
+    container.appendChild(launch_button);
+
+    card_body.appendChild(card_text);
+    card_body.appendChild(container);
+
+    card_outer.appendChild(card_header);
+    card_outer.appendChild(card_body);
+    return card_outer;
+}
+
+{/* <div class="card" style="width: 15rem; margin: 20px">
+    <div class="card-header">
+        <h5 class="card-title">CHEM 130</h5>
+    </div>
+    <div class="card-body">
+        <p class="card-text">3 tabs open</p>
+
+        <div class="container text-center">
+            <button href="#" type="button" class="btn btn-sm btn-block btn-outline-dark">Edit</button>
+            <button href="#" type="button" class="btn btn-sm btn-block btn-dark">Pocket</button>
+        </div>
+    </div>
+</div> */}
 
 // // Runs when Chrome Extension clicked on
 // chrome.browserAction.onClicked.addListener(function (tab) {
