@@ -12,6 +12,16 @@ body {
     text-align: center;
 }
 
+#content {
+    position: relative;
+}
+
+#add_button {
+    position: relative;
+    top: 15px;
+    right: -550px;
+}
+
 /* Animations */
 @keyframes fadeEffect {
     from {opacity: 0.0;}

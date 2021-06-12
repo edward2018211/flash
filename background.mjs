@@ -148,8 +148,19 @@ document.addEventListener('DOMContentLoaded', function() {
             var card = card_builder(pocket);
             pocket_generator.appendChild(card);
         }
+
+        // Add event listener to add_button
+        var add_button = document.getElementById('add_button');
+        add_button.addEventListener('click', function() { add_pocket(); });
     });
 });
+
+function add_pocket() {
+    var pocket_generator = document.getElementById("pocket_generator");
+    new_pocket = new Pocket();
+    new_pocket.setName('Untitled');
+    pocket_generator.appendChild(card_builder(new_pocket));
+}
 
 function card_builder(pocket) {
     var card_outer = document.createElement("div");
