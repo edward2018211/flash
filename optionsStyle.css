@@ -17,9 +17,14 @@ body {
 }
 
 #add_button {
-    position: relative;
-    top: 15px;
-    right: -550px;
+    position: fixed;
+    top: 85px;
+    right: 25px;
+    width: 3em;
+}
+
+#pocket_generator {
+    width: 80%;
 }
 
 /* Animations */
