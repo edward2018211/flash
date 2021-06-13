@@ -31,12 +31,22 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function add_pocket() {
+    // Add pocket to screen
     var pocket_generator = document.getElementById('pocket_generator');
     var new_pocket = new Pocket();
     new_pocket.setName('Untitled');
     pocket_generator.appendChild(card_builder(new_pocket));
 
-    // TODO: Persist new pocket in storage
+    // Retrieve garage
+    chrome.storage.sync.get(['user_garage'], function (result) {
+        var garage = Object.assign(new Garage, JSON.parse(result.user_garage));
+        garage.addPocket(new_pocket);
+
+        // Persist updated garage in storage
+        chrome.storage.sync.set({'user_garage': JSON.stringify(garage)}, function() {
+            console.log('Value is set to ' + JSON.stringify(garage));
+        });
+    });
 }
 
 function card_builder(pocket) {
