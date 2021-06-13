@@ -2,7 +2,7 @@
 // Copyright Edward Huang 2021
 
 // Class that holds all user pockets
-export class Garage {
+export default class Garage {
     constructor() {
         this.pockets = [];
         this.backgroundImage = "";

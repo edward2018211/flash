@@ -2,7 +2,7 @@
 // Copyright Edward Huang 2021
 
 // Class defining a pocket – a set of URLS that can be flashed
-export class Pocket {
+export default class Pocket {
     constructor() {
         this.items = []; // Stores the links that the pocket holds
         this.name = '';

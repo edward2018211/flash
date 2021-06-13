@@ -1,7 +1,8 @@
 // Flash
 // Copyright Edward Huang 2021
 
-import {Garage, Pocket} from 'background.js';
+import Pocket from './pocket.js';
+import Garage from './garage.js';
 
 // Retrieves from storage and adds pockets
 document.addEventListener('DOMContentLoaded', function() {

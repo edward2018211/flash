@@ -1,8 +1,8 @@
 // Flash
 // Copyright Edward Huang 2021
 
-import Pocket from './pocket';
-import Garage from './garage';
+import Pocket from './pocket.js';
+import Garage from './garage.js';
 
 // Retrieves from storage and adds pockets
 document.addEventListener('DOMContentLoaded', function() {
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function add_pocket() {
     var pocket_generator = document.getElementById('pocket_generator');
-    new_pocket = new Pocket();
+    var new_pocket = new Pocket();
     new_pocket.setName('Untitled');
     pocket_generator.appendChild(card_builder(new_pocket));
 
