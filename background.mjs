@@ -4,27 +4,27 @@
 // Class defining a pocket – a set of URLS that can be flashed
 class Pocket {
     constructor() {
-        this.items = [];
+        this.items = []; // Stores the links that the pocket holds
         this.name = '';
+        this.uid = ''; // Unique ID
     }
 
-    // REQUIRES: input name must be a string
-    // MODIFIES: this.pocketName
-    // EFFECTS: Sets the pocket name to input name
+    setUID(uid) {
+        this.uid = uid;
+    }
+
+    getUID() {
+        return this.uid;
+    }
+
     setName(name) {
         this.name = name;
     }
 
-    // REQUIRES: None
-    // MODIFIES: None
-    // EFFECTS: Returns the pocket name
     getName() {
         return this.name;
     }
 
-    // REQUIRES: URL must be a string
-    // MODIFIES: this.items
-    // EFFECTS: Adds input URL to pocket if it doesn't already exist
     addURL(URL) {
         this.items.push(URL);
     }
@@ -38,23 +38,14 @@ class Pocket {
         }
     }
 
-    // REQUIRES: URL must be a string
-    // MODIFIES: this.items
-    // EFFECTS: Remove specified URL from pocket
     removeURL(id) {
         this.items.splice(id, 1);
     }
 
-    // REQUIRES: None
-    // MODIFIES: None
-    // EFFECTS: Returns a boolean value on whether a URL exists
     existURL(URL) {
         return this.items.has(URL);
     }
 
-    // REQUIRES: None
-    // MODIFIES: None
-    // EFFECTS: Flash all URLs in pocket
     flashPocket() {
         for (let url of this.items) {
             chrome.tabs.create({ "url": url }, function(tab) {
@@ -63,9 +54,6 @@ class Pocket {
         }
     }
 
-    // REQUIRES: None
-    // MODIFIES: None
-    // EFFECTS: Returns the number of URLs the pocket contains
     numURLs() {
         return this.items.length;
     }
@@ -76,26 +64,18 @@ class Garage {
     constructor() {
         this.pockets = [];
         this.backgroundImage = "";
+        this.uid_generator = 0;
     }
 
-    // REQUIRES: None
-    // MODIFIES: this.backgroundImage
-    // EFFECTS: Set the path of chosen background image
     setBackgroundImage(path) {
         this.backgroundImage = path;
         // Actually change the image in options.html
     }
 
-    // REQUIRES: None
-    // MODIFIES: None
-    // EFFECTS: Get the path of the current background image
     getBackgroundImage() {
         return this.backgroundImage;
     }
 
-    // REQUIRES: None
-    // MODIFIES: this.backgroundImage
-    // Uses default background 
     restoreDefaultBackground() {
         // Check that this.backgroundImage is not already blur-breathtaking-clouds.jpg
         // Set background to blur-breathtaking-clouds.jpg
@@ -105,23 +85,16 @@ class Garage {
         return this.pockets;
     }
 
-    // REQUIRES: None
-    // MODIFIES: this.items
-    // EFFECTS: Add a pocket to the Garage
     addPocket(pocket) {
+        pocket.setUID(this.uid_generator);
         this.pockets.push(pocket);
+        this.uid_generator = this.uid_generator + 1;
     }
 
-    // REQUIRES: None
-    // MODIFIES: this.items
-    // EFFECTS: Remove a pocket from the Garage
     removePocket(id) {
         this.pockets.splice(id, 1);
     }
 
-    // REQUIRES: None
-    // MODIFIES: None
-    // EFFECTS: Returns the number of pockets the Garage contains
     numPockets() {
         return this.pockets.length;
     }
@@ -190,7 +163,14 @@ function card_builder(pocket) {
     edit_button.classList.add('btn', 'btn-sm', 'btn-block', 'btn-outline-dark');
     edit_button.type = 'button';
     edit_button.appendChild(document.createTextNode('Edit'));
-    edit_button.addEventListener('click', function() { location.assign('edit.html'); });
+    edit_button.addEventListener('click', function() { 
+        // Store requested pocket in storage
+        chrome.storage.sync.set({'pocket_request': pocket.getUID()}, function() {
+            console.log('Value is set to ' + pocket.getUID());
+        });
+
+        location.assign('edit.html'); 
+    });
 
     var launch_button = document.createElement('button');
     launch_button.classList.add('btn', 'btn-sm', 'btn-block', 'btn-dark');
