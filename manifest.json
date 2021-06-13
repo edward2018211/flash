@@ -12,6 +12,6 @@
     },
     "background": {
         "persistent": false,
-        "scripts": ["background.mjs"]
+        "scripts": ["background.js"]
     }
   }

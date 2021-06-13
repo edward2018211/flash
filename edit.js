@@ -1,6 +1,8 @@
 // Flash
 // Copyright Edward Huang 2021
 
+import {Garage, Pocket} from 'background.js';
+
 // Retrieves from storage and adds pockets
 document.addEventListener('DOMContentLoaded', function() {
     // Get from local storage with key
