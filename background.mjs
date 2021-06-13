@@ -156,20 +156,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function add_pocket() {
-    var pocket_generator = document.getElementById("pocket_generator");
+    var pocket_generator = document.getElementById('pocket_generator');
     new_pocket = new Pocket();
     new_pocket.setName('Untitled');
     pocket_generator.appendChild(card_builder(new_pocket));
 }
 
 function card_builder(pocket) {
-    var card_outer = document.createElement("div");
-    card_outer.classList.add("card");
+    var card_outer = document.createElement('div');
+    card_outer.classList.add('card');
     card_outer.style.width = '15rem';
     card_outer.style.margin = '20px';
     
-    var card_header = document.createElement("div");
-    card_header.classList.add("card-header");
+    var card_header = document.createElement('div');
+    card_header.classList.add('card-header');
 
     var card_title = document.createElement('h5');
     card_title.classList.add('card-title');
@@ -190,12 +190,13 @@ function card_builder(pocket) {
     edit_button.classList.add('btn', 'btn-sm', 'btn-block', 'btn-outline-dark');
     edit_button.type = 'button';
     edit_button.appendChild(document.createTextNode('Edit'));
+    edit_button.addEventListener('click', function() { location.assign('edit.html'); });
 
     var launch_button = document.createElement('button');
     launch_button.classList.add('btn', 'btn-sm', 'btn-block', 'btn-dark');
     launch_button.type = 'button';
     launch_button.appendChild(document.createTextNode('Launch'));
-    launch_button.addEventListener("click", function() { pocket.flashPocket(); });
+    launch_button.addEventListener('click', function() { pocket.flashPocket(); });
 
     container.appendChild(edit_button);
     container.appendChild(launch_button);
