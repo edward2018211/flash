@@ -67,18 +67,14 @@ class Garage {
         this.uid_generator = 0;
     }
 
-    setBackgroundImage(path) {
-        this.backgroundImage = path;
-        // Actually change the image in options.html
-    }
+    getPocketByUID(uid) {
+        for (let pocket of this.pockets) {
+            if (pocket.getUID() == uid) {
+                return pocket;
+            }
+        }
 
-    getBackgroundImage() {
-        return this.backgroundImage;
-    }
-
-    restoreDefaultBackground() {
-        // Check that this.backgroundImage is not already blur-breathtaking-clouds.jpg
-        // Set background to blur-breathtaking-clouds.jpg
+        return 'empty';
     }
 
     getPocket() {
@@ -133,6 +129,8 @@ function add_pocket() {
     new_pocket = new Pocket();
     new_pocket.setName('Untitled');
     pocket_generator.appendChild(card_builder(new_pocket));
+
+    // TODO: Persist new pocket in storage
 }
 
 function card_builder(pocket) {
