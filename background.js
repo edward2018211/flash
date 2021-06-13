@@ -1,33 +1,28 @@
 // Flash
 // Copyright Edward Huang 2021
 
-import Pocket from './pocket.js';
-import Garage from './garage.js';
+import retrieveUserGarage from './garage.js';
 
 // Retrieves from storage and adds pockets
 document.addEventListener('DOMContentLoaded', function() {
-    // Get from local storage with key
-    chrome.storage.sync.get(['user_garage'], function (result) {
-        var pocket_generator = document.getElementById("pocket_generator");
-        var no_pocket_message = "You currently don't have any pockets.";
+    var pocket_generator = document.getElementById("pocket_generator");
+    var no_pocket_message = "You currently don't have any pockets.";
 
-        if (!result.user_garage) {
-            pocket_generator.appendChild(document.createElement('b').appendChild(document.createTextNode(no_pocket_message)));
-            return;
-        }
+    var garage = retrieveUserGarage();
 
-        var garage = Object.assign(new Garage, JSON.parse(result.user_garage));
+    if (garage === null) {
+        pocket_generator.appendChild(document.createElement('b').appendChild(document.createTextNode(no_pocket_message)));
+        return;
+    }
 
-        for (let val of garage.getPocket()) {
-            var pocket = Object.assign(new Pocket, val);
-            var card = card_builder(pocket);
-            pocket_generator.appendChild(card);
-        }
+    for (let pocket of garage.getPocket()) {
+        var card = card_builder(pocket);
+        pocket_generator.appendChild(card);
+    }
 
-        // Add event listener to add_button
-        var add_button = document.getElementById('add_button');
-        add_button.addEventListener('click', function() { add_pocket(); });
-    });
+    // Add event listener to add_button
+    var add_button = document.getElementById('add_button');
+    add_button.addEventListener('click', function() { add_pocket(); });
 });
 
 function add_pocket() {

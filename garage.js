@@ -1,8 +1,10 @@
 // Flash
 // Copyright Edward Huang 2021
 
+import Pocket from './pocket.js';
+
 // Class that holds all user pockets
-export default class Garage {
+class Garage {
     constructor() {
         this.pockets = [];
         this.backgroundImage = "";
@@ -36,4 +38,20 @@ export default class Garage {
     numPockets() {
         return this.pockets.length;
     }
+}
+
+export default function retrieveUserGarage() {
+    chrome.storage.sync.get(['user_garage'], function (garage_result) {
+        if (!garage_result.user_garage) {
+            return null;
+        }
+
+        var garage = Object.assign(new Garage, JSON.parse(garage_result.user_garage));
+
+        for (var i = 0; i < garage.getPocket().length; ++i) {
+            garage.getPocket()[i] = Object.assign(new Pocket, garage.getPocket()[i]);
+        }
+
+        return garage;
+    });
 }
